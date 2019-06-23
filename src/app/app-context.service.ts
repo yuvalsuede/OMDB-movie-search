@@ -30,7 +30,8 @@ export class AppContext {
         return 'Your saved movies';
         break;
       case MoviesDataSource.SEARCH:
-        return 'Movie search';
+
+        return 'Movie search' + (this.searchBl.CurrentTitle ? ': ' + this.searchBl.CurrentTitle : '' );
         break;
       case MoviesDataSource.ERROR:
         return 'Search failed .. try to be more specific';

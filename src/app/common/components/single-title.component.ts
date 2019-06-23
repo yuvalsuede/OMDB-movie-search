@@ -6,9 +6,11 @@ import {SaveBlService} from '../modules/save/save.bl';
 @Component({
   selector: 'app-single-title-component',
   template: `
-    <div class="postPhoto" [style.backgroundImage]="'url('+ data.Poster +')'">
+    <a [href]="getIMDBlink(data.imdbID)" target="_blank">
+      <div class="postPhoto" [style.backgroundImage]="'url('+ data.Poster +')'">
 
-    </div>
+      </div>
+    </a>
 
     <div class="postInfo">
       <div class="source-wrapper">

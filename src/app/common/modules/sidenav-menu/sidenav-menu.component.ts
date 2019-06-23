@@ -6,7 +6,9 @@ import {SearchBlService} from '../search/search.bl';
 @Component({
   selector: 'app-sidenav-menu',
   template: `
-    <div class="sidenav-row" *ngFor="let year of years"
+    <div class="sidenav-row"
+         [ngClass]="{selected: year == CurrentYear}"
+         *ngFor="let year of years"
          (click)="searchByYear(year)">
       <span>{{ year }}</span>
     </div>
@@ -30,7 +32,10 @@ import {SearchBlService} from '../search/search.bl';
       border-bottom: 1px solid #efefef;
       color: #b3b3b3;
     }
-
+    .sidenav-row.selected {
+      background-color: #282828;
+      color: white;
+    }
     .sidenav-row-inner img {
       margin-right: 10px;
     }
@@ -72,6 +77,10 @@ export class SidenavMenuComponent implements OnInit {
 
   searchByYear(year: string) {
     this.searchBl.searchByYear(year);
+  }
+
+  get CurrentYear() {
+    return this.searchBl.CurrentYear;
   }
 
 

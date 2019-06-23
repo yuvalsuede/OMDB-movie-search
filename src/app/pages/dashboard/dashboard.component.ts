@@ -6,7 +6,9 @@ import * as _ from 'lodash';
   selector: 'app-dashboard-component',
   template: `
     <div class="scroll-container">
+
       <app-page-title [title]="AppName"></app-page-title>
+
       <mat-grid-list [cols]="breakpointCols"
                      [gutterSize]="'20px'"
                      (window:resize)="onResize($event)">
@@ -16,6 +18,7 @@ import * as _ from 'lodash';
           </app-single-title-component>
         </mat-grid-tile>
       </mat-grid-list>
+
     </div>
 
   `,
@@ -42,7 +45,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+
     this.calcBreakpoint();
+
+    // important not to fire scroll event all the time
     window.addEventListener('scroll', _.debounce(this.scroll, 500), true);
   }
 
@@ -63,6 +69,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.app.Movies;
   }
 
+  // special handler for infinite scroll. We can use a scroll library, but the overhead is large here..
   scroll = (event) => {
 
     this.app.ScrolledBottom = false;
@@ -73,8 +80,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // get more results
       this.app.ScrolledBottom = true;
     }
-  }
+  };
 
+  // don't forget to remove scroll listener
   ngOnDestroy() {
     window.removeEventListener('scroll', this.scroll, true);
   }

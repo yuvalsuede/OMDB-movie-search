@@ -38,6 +38,7 @@ import {CoreModule} from './common/core.module';
 
     CoreModule.forRoot(),
 
+    // required for app.component
     MatSidenavModule,
     MatIconModule,
     MatFormFieldModule,
@@ -47,11 +48,12 @@ import {CoreModule} from './common/core.module';
     MatProgressButtonsModule.forRoot(),
     MatProgressBarModule,
 
+    // routing
     AppRoutingModule,
 
-    HeaderModule,
 
-    // pages
+    // pages & main modules
+    HeaderModule,
     DashboardModule,
     SidenavMenuModule,
 

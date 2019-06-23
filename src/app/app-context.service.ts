@@ -23,6 +23,7 @@ export class AppContext {
   constructor() {
   }
 
+  // we can use any logic for page title or name
   get AppName() {
     switch (this.MoviesDataSource) {
       case MoviesDataSource.SAVE:
@@ -39,12 +40,15 @@ export class AppContext {
     }
   }
 
+  // list of user saved movies
   get SavedMovies() {
     if (this.savedBl) {
       return this.savedBl.SavedMovies;
     }
     return [];
   }
+
+  // current movies context
   get Movies() {
     switch (this.MoviesDataSource) {
       case MoviesDataSource.SEARCH:

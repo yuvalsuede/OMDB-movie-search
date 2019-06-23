@@ -104,6 +104,7 @@ export class SearchBlService {
 
       } else {
         this.app.MoviesDataSource = MoviesDataSource.ERROR;
+        this.app.AppError = _.get(data, 'Error');
       }
 
 
@@ -153,17 +154,25 @@ export class SearchBlService {
   }
 
   onSearchChange(value) {
+    if (!value) {
+      this.resetSearch();
+      return;
+    }
     this.app.MoviesDataSource = MoviesDataSource.SEARCH;
     this.getMoviesByNameAndYear(value);
   }
 
   resetSearch() {
+
     this.app.MoviesDataSource = MoviesDataSource.SEARCH;
+    this.app.AppError = '';
+
     this.Results = 0;
     this.CurrentTitle = '';
     this.CurrentPage = 0;
     this.Movies = [];
     this.CurrentYear = '';
+
   }
 
   searchByYear(year: string) {

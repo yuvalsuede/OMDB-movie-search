@@ -15,13 +15,12 @@ export class AppContext {
   _scrolledBottom = false;
   _appLoading = false;
   _moviesDataSource: MoviesDataSource;
+  _appError = '';
 
   searchBl: any;
   savedBl: any;
 
-
-  constructor() {
-  }
+  constructor() {}
 
   // we can use any logic for page title or name
   get AppName() {
@@ -34,7 +33,7 @@ export class AppContext {
         return 'Movie search' + (this.searchBl.CurrentTitle ? ': ' + this.searchBl.CurrentTitle : '' );
         break;
       case MoviesDataSource.ERROR:
-        return 'Search failed .. try to be more specific';
+        return this.AppError;
         break;
       default:
         return 'Movie search';
@@ -93,6 +92,14 @@ export class AppContext {
 
   set MoviesDataSource(source: MoviesDataSource) {
     this._moviesDataSource = source;
+  }
+
+  set AppError(err: string) {
+    this._appError = err;
+  }
+
+  get AppError() {
+    return this._appError;
   }
 
   resetAll() {

@@ -104,6 +104,7 @@ export class AppContext {
 
   resetAll() {
     if (this.searchBl) {
+      this.searchBl.resetForm();
       this.searchBl.resetSearch();
       this.searchBl.makeDefaultSearch();
     }

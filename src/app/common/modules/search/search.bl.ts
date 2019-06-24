@@ -15,7 +15,7 @@ export class SearchBlService {
   _results = 0;
   _currentTitle = '';
   _currentYear = '';
-  _total = 0;
+  _pages = 0;
 
   constructor(private searchService: SearchService,
               private app: AppContext) {
@@ -45,12 +45,12 @@ export class SearchBlService {
     this._currentTitle = title;
   }
 
-  get Results() {
-    return this._results;
+  get Pages() {
+    return this._pages;
   }
 
-  set Results(results: number) {
-    this._results = results;
+  set Pages(pages: number) {
+    this._pages = pages;
   }
 
   get Movies(): IMovie[] {
@@ -85,20 +85,20 @@ export class SearchBlService {
     this.CurrentYear = year;
 
     this.searchService.getMoviesByNameAndYear(name, year, page).subscribe((data) => {
+      console.log(data);
       this.app.Loading = false;
 
-      const success = _.isEqual(_.get(data, 'Response'), 'True');
+      const success = _.get(data, 'results').length;
       if (success) {
-        const movies = _.get(data, 'Search');
-        this._total += movies.length;
+        const movies = _.get(data, 'results');
         this.Movies = movies.map(x => {
           return this.fixPoster(x);
         });
 
         this.CurrentPage = 1;
-        this.Results = _.get(data, 'totalResults');
+        this.Pages = _.get(data, 'total_pages');
 
-        if (this.Results > this._total) {
+        if (this.Pages > this.CurrentPage) {
           this.getMorePages(); // get one more page.. to pretiffy the view
         }
 
@@ -112,8 +112,9 @@ export class SearchBlService {
   }
 
   fixPoster(movie) {
-    if (!movie.Poster || movie.Poster === 'N/A') {
-      movie.Poster = 'https://res.cloudinary.com/demo/image/upload/sample.jpg';
+    if (!movie.poster_path) {
+      movie.poster_path = 'https://res.cloudinary.com/demo/image/upload/sample.jpg';
+      movie.use_cloudinary_poster = true;
     }
     return movie;
   }
@@ -123,7 +124,7 @@ export class SearchBlService {
     this.app.Loading = true; // set app loading; in general, should be a singleton service to handle this
 
     // we didn't find a first page with results
-    if (!this.CurrentPage || this._total >= this.Results) {
+    if (!this.CurrentPage || this.CurrentPage >= this.Pages) {
       this.app.Loading = false;
       return;
     }
@@ -131,16 +132,17 @@ export class SearchBlService {
     const newPage = this.CurrentPage += 1;
     this.searchService.getMoviesByNameAndYear(this.CurrentTitle, this.CurrentYear, `${newPage}`).subscribe((data) => {
       this.app.Loading = false;
-      const success = _.isEqual(_.get(data, 'Response'), 'True');
+      const success = _.get(data, 'results').length;
 
       if (success) {
-        const movies: IMovie[] = _.get(data, 'Search');
-        this._total += movies.length;
+        const movies: IMovie[] = _.get(data, 'results');
         movies.map(x => {
           return this.fixPoster(x);
         });
+
         this.Movies = (this.Movies).concat(movies);
         this.CurrentPage = newPage;
+
       } else {
         this.app.MoviesDataSource = MoviesDataSource.ERROR;
       }
@@ -166,13 +168,15 @@ export class SearchBlService {
 
     this.app.MoviesDataSource = MoviesDataSource.SEARCH;
     this.app.AppError = '';
-
-    this.Results = 0;
+    this.Pages = 0;
     this.CurrentTitle = '';
     this.CurrentPage = 0;
     this.Movies = [];
     this.CurrentYear = '';
 
+  }
+  resetForm() {
+    this.searchFormControl.reset('');
   }
 
   searchByYear(year: string) {

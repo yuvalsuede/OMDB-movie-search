@@ -23,9 +23,9 @@ import {MatAutocompleteTrigger} from '@angular/material';
                  #movieinput
                  placeholder="Search by movie Title">
           <mat-autocomplete #autocomplete (optionSelected)="optionSelected($event)" autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions" [value]="(option.Title).toLowerCase()"
+            <mat-option *ngFor="let option of filteredOptions" [value]="(option.title).toLowerCase()"
             >
-              {{ option.Title }}
+              {{ option.title }}
             </mat-option>
           </mat-autocomplete>
           <mat-icon matSuffix (click)="closePanel($event)">search</mat-icon>

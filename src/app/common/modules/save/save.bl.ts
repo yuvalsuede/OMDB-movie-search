@@ -16,12 +16,14 @@ export class SaveBlService {
   }
 
   saveMovie(movie) {
+    console.log(movie);
     const savedStorage = this.storage.api.local.get('saved_movies');
 
     let movieList = [];
 
     if (!savedStorage) {
       movieList.push(movie);
+      this.SavedMovies = movieList;
       this.storage.api.local.save('saved_movies', JSON.stringify(movieList));
 
     } else {
@@ -49,7 +51,7 @@ export class SaveBlService {
 
     if (savedStorage) {
       const movieList: IMovie[] = Array.from(JSON.parse(savedStorage));
-      const movieIndex = _.findIndex(movieList, x => x.imdbID === movie.imdbID);
+      const movieIndex = _.findIndex(movieList, x => x.id === movie.id);
 
       if (movieIndex >= 0) {
         movieList.splice(movieIndex, 1 );

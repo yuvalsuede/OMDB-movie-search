@@ -2,12 +2,13 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AppContext} from '../../app-context.service';
 import * as _ from 'lodash';
 import {SaveBlService} from '../modules/save/save.bl';
+import {OMDB_CONFIG} from '../../config/app.config';
 
 @Component({
   selector: 'app-single-title-component',
   template: `
-    <a [href]="getIMDBlink(data.imdbID)" target="_blank">
-      <div class="postPhoto" [style.backgroundImage]="'url('+ data.Poster +')'">
+    <a [href]="getIMDBlink(data)" target="_blank">
+      <div class="postPhoto" [style.backgroundImage]="getPoster(data)">
 
       </div>
     </a>
@@ -18,7 +19,7 @@ import {SaveBlService} from '../modules/save/save.bl';
           <mat-icon>movie_filter</mat-icon>
         </span>
       </div>
-      <div class="title">{{ data.Title }}</div>
+      <div class="title">{{ data.title }}</div>
     </div>
 
     <div class="postMeta">
@@ -29,7 +30,7 @@ import {SaveBlService} from '../modules/save/save.bl';
                     (click)="saveMovie(data)"
                     [matTooltipPosition]="'above'">{{Bookmark}}
           </mat-icon>
-          <a [href]="getIMDBlink(data.imdbID)" target="_blank">
+          <a [href]="getIMDBlink(data)" target="_blank">
             <mat-icon class="imdb-link"
                       matTooltip="View on IMDB"
                       [matTooltipPosition]="'above'"
@@ -37,7 +38,7 @@ import {SaveBlService} from '../modules/save/save.bl';
             </mat-icon>
           </a>
         </div>
-        <div class="pull-right">{{ data.Year }}</div>
+        <div class="pull-right">{{ data.release_date }}</div>
       </div>
     </div>
 
@@ -190,20 +191,25 @@ export class SingleTitleComponent implements OnInit {
 
   get IsSaved() {
     const saved = this.app.SavedMovies || [];
-    const issaved = saved.length && saved.filter(x => x.imdbID === this.data.imdbID).length > 0;
+    const issaved = saved.length && saved.filter(x => x.id === this.data.id).length > 0;
     return issaved;
   }
 
-  getIMDBlink(id) {
+  getIMDBlink(movie) {
 
-    const imdbBase = 'https://www.imdb.com/title';
+    const tmdbBase = `https://www.themoviedb.org/movie`;
 
-    return `${imdbBase}/${id}`;
+    return `${tmdbBase}/${movie.id}-${movie.title}`;
   }
 
   get Bookmark() {
 
     return this.IsSaved ? 'bookmark' : 'bookmark_border';
+  }
+
+  getPoster(movie) {
+    return movie.use_cloudinary_poster ? `url(${movie.poster_path})` :
+      `url(${OMDB_CONFIG.posterEndpoint}/${movie.poster_path})`;
   }
 
 

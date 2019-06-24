@@ -7,7 +7,7 @@ This is a DESKTOP APP, hence not supporting mobile layout at the moment.
 
 ## Search
 
-To search for movie by title, start typing the name of the movie 
+To search for a movie by title, start typing the name of the movie.  
 
 ## Save
 

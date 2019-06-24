@@ -1,6 +1,9 @@
 # OMDB search
 ![alt omdb search](./src/assets/images/omdb.png)
 
+## [view online demo here ](https://elastic-newton-5d9872.netlify.com/)
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
 
 This is a DESKTOP APP, hence not supporting mobile layout at the moment. 

@@ -13,7 +13,7 @@ export class SearchService {
   }
 
   getMoviesByNameAndYear(name: string, year: string, page: string ): Observable<IMovie> {
-    return this.http.get(this.api.resolve(`${this.api.endPoints.search}&s=${name}&page=${page}&y=${year}`)).pipe(
+    return this.http.get(this.api.resolve(`${this.api.endPoints.movies}&s=${name}&page=${page}&y=${year}`)).pipe(
       map((res) => {
         return this.http.extractData(res);
       }),
